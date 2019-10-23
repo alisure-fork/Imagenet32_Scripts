@@ -2,8 +2,8 @@ import os
 import glob
 import utils
 import pickle
+import imageio
 import numpy as np
-from scipy import misc
 from alisuretool.Tools import Tools
 
 
@@ -26,7 +26,7 @@ def process_folder(all_png, out_dir):
         if label not in labels_searched:
             continue
         try:
-            img = misc.imread(image_name)
+            img = imageio.imread(image_name)
             r = img[:, :, 0].flatten()
             g = img[:, :, 1].flatten()
             b = img[:, :, 2].flatten()
@@ -56,6 +56,7 @@ def process_folder(all_png, out_dir):
         Tools.print('%d : %d' % (i, count[i]))
     Tools.print('SUM: %d' % len(y_test))
     pass
+
 
 if __name__ == '__main__':
     size = 64

@@ -1,11 +1,12 @@
-# http://stackoverflow.com/questions/35032675/how-to-create-dataset-similar-to-cifar-10/35034287
+"""
+http://stackoverflow.com/questions/35032675/how-to-create-dataset-similar-to-cifar-10/35034287
+"""
 
 import os
-import glob
 import utils
 import pickle
+import imageio
 import numpy as np
-from scipy import misc
 from alisuretool.Tools import Tools
 
 
@@ -20,14 +21,14 @@ def process_folder(in_dir, out_dir):
         images = []
         for image_name in os.listdir(os.path.join(in_dir, folder)):
             try:
-                img = misc.imread(os.path.join(in_dir, folder, image_name))
+                img = imageio.imread(os.path.join(in_dir, folder, image_name))
                 r = img[:, :, 0].flatten()
                 g = img[:, :, 1].flatten()
                 b = img[:, :, 2].flatten()
             except:
                 Tools.print('Cant process image %s' % image_name)
                 with open("log_img2np.txt", "a") as f:
-                    f.write("Couldn't read: %s \n" % os.path.join(in_dir, image_name))
+                    f.write("Couldn't read: {} \n".format(os.path.join(in_dir, folder, image_name)))
                 continue
             arr = np.array(list(r) + list(g) + list(b), dtype=np.uint8)
             images.append(arr)
@@ -73,9 +74,9 @@ def process_folder(in_dir, out_dir):
 
 
 if __name__ == '__main__':
-    size = 32
+    size = 64
     algorithm = "box"
-    root_dir = "D:\\data\\DATASET\\ILSVRC2015\\Data\\CLS-LOC"
+    root_dir = "/media/ubuntu/ALISURE/data/DATASET/ILSVRC2015/Data/CLS-LOC"
     in_dir = os.path.join(root_dir, "train_{}".format(size), algorithm)
     out_dir = os.path.join(root_dir, "train_{}_out".format(size), algorithm)
 

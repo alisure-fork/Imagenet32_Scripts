@@ -36,7 +36,7 @@ def resize_img_folder(i, in_dir, out_dir, alg, size):
 
 if __name__ == '__main__':
     size = 64
-    root_dir = "D:\\data\\DATASET\\ILSVRC2015\\Data\\CLS-LOC"
+    root_dir = "/media/ubuntu/ALISURE/data/DATASET/ILSVRC2015/Data/CLS-LOC"
     in_dir = os.path.join(root_dir, "train")
     out_dir = os.path.join(root_dir, "train_{}".format(size))
     # in_dir = os.path.join(root_dir, "val_new")
