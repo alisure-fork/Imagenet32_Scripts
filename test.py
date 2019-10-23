@@ -6,9 +6,6 @@ import os
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-# Test script
-
-# Change this one to check other file
 
 
 def parse_arguments():
@@ -24,30 +21,22 @@ def parse_arguments():
 
 
 def load_data(input_file):
-
     d = unpickle(input_file)
     x = d['data']
     y = d['labels']
-
     x = np.dstack((x[:, :1024], x[:, 1024:2048], x[:, 2048:]))
     x = x.reshape((x.shape[0], 32, 32, 3))
-
     return x, y
 
 if __name__ == '__main__':
-    input_file, gen_images, hist_sorted  = parse_arguments()
+    input_file, gen_images, hist_sorted = parse_arguments()
     x, y = load_data(input_file)
-
-    # Lets save all images from this file
-    # Each image will be 3600x3600 pixels (10 000) images
-
     blank_image = None
     curr_index = 0
     image_index = 0
 
     print('First image in dataset:')
     print(x[curr_index])
-
     if not os.path.exists('res'):
         os.makedirs('res')
 
