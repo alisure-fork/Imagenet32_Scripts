@@ -19,28 +19,32 @@ def process_folder(in_dir, out_dir):
         label = label_dict[folder]
         Tools.print("Processing images from folder %s as label %d" % (folder, label))
         images = []
-        for image_name in os.listdir(os.path.join(in_dir, folder)):
-            try:
-                img = imageio.imread(os.path.join(in_dir, folder, image_name))
-                r = img[:, :, 0].flatten()
-                g = img[:, :, 1].flatten()
-                b = img[:, :, 2].flatten()
-            except:
-                Tools.print('Cant process image %s' % image_name)
-                with open("log_img2np.txt", "a") as f:
-                    f.write("Couldn't read: {} \n".format(os.path.join(in_dir, folder, image_name)))
-                continue
-            arr = np.array(list(r) + list(g) + list(b), dtype=np.uint8)
-            images.append(arr)
+        try:
+            for image_name in os.listdir(os.path.join(in_dir, folder)):
+                try:
+                    img = imageio.imread(os.path.join(in_dir, folder, image_name))
+                    r = img[:, :, 0].flatten()
+                    g = img[:, :, 1].flatten()
+                    b = img[:, :, 2].flatten()
+                except Exception:
+                    Tools.print('Cant process image %s' % image_name)
+                    with open("log_img2np.txt", "a") as f:
+                        f.write("Couldn't read: {} \n".format(os.path.join(in_dir, folder, image_name)))
+                    continue
+                arr = np.array(list(r) + list(g) + list(b), dtype=np.uint8)
+                images.append(arr)
+                pass
 
-        data = np.row_stack(images)
-        samples_num = data.shape[0]
-        labels = [label] * samples_num
+            data = np.row_stack(images)
+            samples_num = data.shape[0]
+            labels = [label] * samples_num
 
-        labels_list_train.extend(labels)
-        data_list_train.append(data)
+            labels_list_train.extend(labels)
+            data_list_train.append(data)
 
-        Tools.print('Label: %d: %s has %d samples' % (label, folder, samples_num))
+            Tools.print('Label: %d: %s has %d samples' % (label, folder, samples_num))
+        except Exception:
+            pass
 
     x = np.concatenate(data_list_train, axis=0)
     y = labels_list_train
@@ -74,7 +78,7 @@ def process_folder(in_dir, out_dir):
 
 
 if __name__ == '__main__':
-    size = 64
+    size = 16
     algorithm = "box"
     root_dir = "/media/ubuntu/ALISURE/data/DATASET/ILSVRC2015/Data/CLS-LOC"
     in_dir = os.path.join(root_dir, "train_{}".format(size), algorithm)
